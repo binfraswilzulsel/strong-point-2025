@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Strong Point Timeline</title>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #0740aa;
+      color: #333;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      background: #0740aa;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      font-size: 25px;
+      font-weight: bold;
+      z-index: 10;
+          }
+
+    main {
+      padding: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+      transition: transform 0.2s;
+      cursor: pointer;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .icon {
+      width: 60px;
+      height: 60px;
+      color: #0740aa;
+      flex-shrink: 0;
+    }
+
+    .info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .title {
+      font-size: 18px;
+      font-weight: bold;
+      color: #0740aa;
+      margin-bottom: 8px;
+    }
+
+    .text {
+      font-size: 14px;
+      margin: 2px 0;
+      color: #444;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .text i {
+      color: #0740aa;
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+
+    .text span {
+      font-weight: bold;
+      color: #0740aa;
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: #fff;
+      border-radius: 15px;
+      padding: 20px;
+      max-width: 600px;
+      width: 90%;
+      max-height: 85%;
+      overflow-y: auto;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: bold;
+      color: #0740aa;
+      margin-bottom: 10px;
+    }
+
+    .close {
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+    .filter-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-bottom: 10px;
+    }
+
+    .filter-buttons button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 15px; /* 2x lebih tinggi */
+      border: none;
+      border-radius: 12px;
+      background-color: #0740aa;
+      color: white;
+      font-weight: bold;
+      font-size: 20px; /* 2x lebih besar */
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .filter-buttons button:hover {
+      background-color: #133b73;
+      box-shadow: 0 0 10px rgba(19,59,115,0.5);
+    }
+
+    .filter-buttons button.active {
+      background-color: #1e56a0;
+      box-shadow: 0 0 15px rgba(30,86,160,0.7);
+    }
+
+    .filter-buttons i {
+      font-size: 28px;
+      color: #ffd43b; /* ikon berwarna agar lebih hidup */
+    }
+
+    .milestone {
+      margin-bottom: 15px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      background: #f9f9f9;
+    }
+
+    .milestone strong {
+      color: #0a2342;
+    }
+
+    .highlight {
+      color: red;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <header>Strong Point Timeline</header>
+
+  <main>
+    <!-- Kartu DISHUB -->
+    <div class="card" id="card-dishub">
+      <i data-lucide="bus" class="icon"></i>
+      <div class="info">
+        <div class="title">DISHUB</div>
+        <div class="text"><i class="fa-solid fa-money-bill-wave"></i>Total Anggaran: <br><span>Rp 22.417.780.000</span></div>
+        <div class="text"><i class="fa-solid fa-list-check"></i>Jumlah Kegiatan: <span>4</span></div>
+      </div>
+    </div>
+
+    <!-- Kartu BM & BK -->
+    <div class="card" id="card-bm-bk">
+      <i data-lucide="construction" class="icon"></i>
+      <div class="info">
+        <div class="title">BM & BK</div>
+        <div class="text"><i class="fa-solid fa-money-bill-wave"></i>Total Anggaran: <br><span>Rp. 470.937.151.950</span></div>
+        <div class="text"><i class="fa-solid fa-list-check"></i>Jumlah Kegiatan: <span>8</span></div>
+      </div>
+    </div>
+
+    <!-- Kartu SDA & CKTR -->
+    <div class="card" id="card-sda-cktr">
+      <i data-lucide="droplets" class="icon"></i>
+      <div class="info">
+        <div class="title">SDA & CKTR</div>
+        <div class="text"><i class="fa-solid fa-money-bill-wave"></i>Total Anggaran: <br><span>Rp. 137.397.239.360</span></div>
+        <div class="text"><i class="fa-solid fa-list-check"></i>Jumlah Kegiatan: <span>15</span></div>
+      </div>
+    </div>
+
+    <!-- Kartu PERKIMTAN -->
+    <div class="card" id="card-perkimtan">
+      <i data-lucide="home" class="icon"></i>
+      <div class="info">
+        <div class="title">PERKIMTAN</div>
+        <div class="text"><i class="fa-solid fa-money-bill-wave"></i>Total Anggaran: <br><span>Rp. 11.717.535.000</span></div>
+        <div class="text"><i class="fa-solid fa-list-check"></i>Jumlah Kegiatan: <span>6</span></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal DISHUB -->
+  <div id="modal-dishub" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span>Milestone DISHUB</span>
+        <span class="close" id="closeModalDISHUB">&times;</span>
+      </div>
+
+      <div class="filter-buttons">
+        <button data-filter="Launching"><i class="fa-solid fa-rocket"></i> Launching</button>
+        <button data-filter="Groundbreaking"><i class="fa-solid fa-person-digging"></i> Groundbreaking</button>
+        <button data-filter="Kick Off"><i class="fa-solid fa-bullseye"></i> Kick Off</button>
+        <button data-filter="Semua"><i class="fa-solid fa-layer-group"></i> Semua</button>
+      </div>
+
+      <div id="milestone-list-dishub"></div>
+    </div>
+  </div>
+
+  <!-- Modal BM & BK -->
+  <div id="modal-bm-bk" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span>Milestone BM & BK</span>
+        <span class="close" id="closeModalBMBK">&times;</span>
+      </div>
+
+      <div class="filter-buttons">
+        <button data-filter="Launching"><i class="fa-solid fa-rocket"></i> Launching</button>
+        <button data-filter="Groundbreaking"><i class="fa-solid fa-person-digging"></i> Groundbreaking</button>
+        <button data-filter="Kick Off"><i class="fa-solid fa-bullseye"></i> Kick Off</button>
+        <button data-filter="Semua"><i class="fa-solid fa-layer-group"></i> Semua</button>
+      </div>
+
+      <div id="milestone-list-bm-bk"></div>
+    </div>
+  </div>
+
+  <!-- Modal SDA & CKTR -->
+  <div id="modal-sda-cktr" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span>Milestone SDA & CKTR</span>
+        <span class="close" id="closeModalSDA">&times;</span>
+      </div>
+
+      <div class="filter-buttons">
+        <button data-filter="Launching"><i class="fa-solid fa-rocket"></i> Launching</button>
+        <button data-filter="Groundbreaking"><i class="fa-solid fa-person-digging"></i> Groundbreaking</button>
+        <button data-filter="Kick Off"><i class="fa-solid fa-bullseye"></i> Kick Off</button>
+        <button data-filter="Semua"><i class="fa-solid fa-layer-group"></i> Semua</button>
+      </div>
+
+      <div id="milestone-list-sda-cktr"></div>
+    </div>
+  </div>
+
+  <!-- Modal PERKIMTAN -->
+  <div id="modal-perkimtan" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span>Milestone PERKIMTAN</span>
+        <span class="close" id="closeModalPERKIMTAN">&times;</span>
+      </div>
+
+      <div class="filter-buttons">
+        <button data-filter="Launching"><i class="fa-solid fa-rocket"></i> Launching</button>
+        <button data-filter="Groundbreaking"><i class="fa-solid fa-person-digging"></i> Groundbreaking</button>
+        <button data-filter="Kick Off"><i class="fa-solid fa-bullseye"></i> Kick Off</button>
+        <button data-filter="Semua"><i class="fa-solid fa-layer-group"></i> Semua</button>
+      </div>
+
+      <div id="milestone-list-perkimtan"></div>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    // Data DISHUB
+    const dataDishub = [
+      { kegiatan: "Angkutan Perkotaan Pada 2 Koridor Di 3 Kabupaten/Kota Di Sulawesi Selatan", alokasi: "17,719,600,000", milestone: "Launching", tanggal: "14 Juli 2025" },
+      { kegiatan: "Trans Andalan Hati (Trans Sulsel) Pada 5 Rute Di 7 Kabupaten/Kota Di Sulawesi Selatan", alokasi: "2,482,110,000", milestone: "Launching", tanggal: "14 Juli 2025" },
+      { kegiatan: "Angkutan Pemadu Moda/Shuttle Bus Pada 2 Kabupaten/Kota Di Sulawesi Selatan", alokasi: "414,090,000", milestone: "Launching", tanggal: "14 Juli 2025" },
+      { kegiatan: "Pembangunan Sarana Dermaga Apung, Sea Plane", alokasi: "1,801,980,000", milestone: "Groundbreaking", tanggal: "11 Agustus 2025" }
+    ];
+
+    // Data BM & BK
+    const dataBMBK = [
+      { kegiatan: "Pembangunan Jalan Ruas Tanabau - Ngapaloka - Patumbukang di Kab. Kep. Selayar", alokasi: " 26.130.000.000", milestone: "Groundbreaking", tanggal: "23 Mei & 19 November 2025" },
+      { kegiatan: "Pembangunan Jalan Kawasan Center Point Of Indonesia (CPI) di Kota Makassar", alokasi: " 28.828.796.220", milestone: "Groundbreaking", tanggal: "23 Mei & 19 November 2025" },
+      { kegiatan: "Penanganan Preservasi Jalan Paket 1-5", alokasi: " 387.483.458.930", milestone: "Groundbreaking", tanggal: "21 Juli & 31 Desember 2025" },
+      { kegiatan: "Penanganan Preservasi Jalan Paket 1-5", alokasi: " 387.483.458.930", milestone: "Groundbreaking", tanggal: "21 Juli & 31 Desember 2025" },
+      { kegiatan: "Penanganan Preservasi Jalan Paket 1-5", alokasi: " 387.483.458.930", milestone: "Groundbreaking", tanggal: "21 Juli & 31 Desember 2025" },
+      { kegiatan: "Penanganan Preservasi Jalan Paket 1-5", alokasi: " 387.483.458.930", milestone: "Groundbreaking", tanggal: "21 Juli & 31 Desember 2025" },
+      { kegiatan: "Penanganan Preservasi Jalan Paket 1-5", alokasi: " 387.483.458.930", milestone: "Groundbreaking", tanggal: "21 Juli & 31 Desember 2025" },
+      { kegiatan: "Penanganan Preservasi Jalan Paket 1-5", alokasi: " 387.483.458.930", milestone: "Groundbreaking", tanggal: "21 Juli & 31 Desember 2025" },
+    ];
+
+    // Data SDA & CKTR
+    const dataSDA = [
+      { kegiatan: "Pembangunan Sarana Irigasi Di Kabupaten D", alokasi: "10,000,000,000", milestone: "Launching", tanggal: "20 Januari 2025" },
+      { kegiatan: "Pengelolaan Sumber Daya Alam Di Provinsi E", alokasi: "6,000,000,000", milestone: "Groundbreaking", tanggal: "15 Februari 2025" },
+      { kegiatan: "Rehabilitasi Lahan Di Provinsi F", alokasi: "8,000,000,000", milestone: "Kick Off", tanggal: "10 Maret 2025" }
+    ];
+
+    // Data PERKIMTAN
+    const dataPERKIMTAN = [
+      { kegiatan: "Pembangunan Perumahan Di Kabupaten G", alokasi: "5,000,000,000", milestone: "Launching", tanggal: "7 Februari 2025" },
+      { kegiatan: "Pembangunan Infrastruktur Kota Di Provinsi H", alokasi: "9,000,000,000", milestone: "Groundbreaking", tanggal: "15 Mei 2025" },
+      { kegiatan: "Penyediaan Fasilitas Pemukiman Di Kabupaten I", alokasi: "4,000,000,000", milestone: "Kick Off", tanggal: "22 Juni 2025" }
+    ];
+
+    // Fungsi untuk menampilkan milestone berdasarkan filter
+    function showMilestone(filter, milestoneList, data) {
+      milestoneList.innerHTML = "";
+      const filtered = filter === "Semua" ? data : data.filter(i => i.milestone === filter);
+      filtered.forEach(item => {
+        const div = document.createElement("div");
+        div.classList.add("milestone");
+        const milestoneText = item.milestone === filter ? `<span class='highlight'>${item.milestone}</span>` : item.milestone;
+        div.innerHTML = `
+          <strong>${item.kegiatan}</strong><br>
+          Alokasi: Rp ${item.alokasi}<br>
+          Milestone: ${milestoneText || "-"}<br>
+          Tanggal: ${item.tanggal || "-"}`;
+        milestoneList.appendChild(div);
+      });
+    }
+
+    // Modal control for each card
+    function addModalControl(cardId, modalId, data) {
+      const card = document.getElementById(cardId);
+      const modal = document.getElementById(modalId);
+      const closeModal = modal.querySelector(".close");
+      const milestoneList = modal.querySelector("div[id^='milestone-list']");
+      const buttons = modal.querySelectorAll(".filter-buttons button");
+
+      card.addEventListener("click", () => {
+        modal.style.display = "flex";
+        milestoneList.innerHTML = "";
+        buttons.forEach(b => b.classList.remove("active"));
+      });
+
+      buttons.forEach(btn => {
+        btn.addEventListener("click", () => {
+          buttons.forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+          showMilestone(btn.dataset.filter, milestoneList, data);
+        });
+      });
+
+      closeModal.addEventListener("click", () => {
+        modal.style.display = "none";
+        milestoneList.innerHTML = "";
+        buttons.forEach(b => b.classList.remove("active"));
+      });
+
+      window.addEventListener("click", e => {
+        if (e.target === modal) {
+          modal.style.display = "none";
+          milestoneList.innerHTML = "";
+          buttons.forEach(b => b.classList.remove("active"));
+        }
+      });
+    }
+
+    // Tambahkan modal control untuk masing-masing kartu
+    addModalControl("card-dishub", "modal-dishub", dataDishub);
+    addModalControl("card-bm-bk", "modal-bm-bk", dataBMBK);
+    addModalControl("card-sda-cktr", "modal-sda-cktr", dataSDA);
+    addModalControl("card-perkimtan", "modal-perkimtan", dataPERKIMTAN);
+  </script>
+</body>
+</html>
